@@ -1,38 +1,27 @@
-import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { Downloads } from "./Components/DownloadsPage/Downloads"
+import { Home } from "./Components/HomePage/Home"
+import { Search } from "./Components/SearchPage/Search"
+import { Library } from "./Components/LibraryPage/Library"
+import { Favorites } from "./Components/FavoritesPage/Favorites"
+import { Layout } from ".//Components/Layouts/Layout"
 
-function App() {
-  const [data, setData] = useState<string[]>([]); // Explicitly define the type as an array of strings
-
-  useEffect(() => {
-    fetch("/hello")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setData(data.message); // Update state with the 'message' array
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
-
+export default function App() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold text-blue-500">
-          Hello Tailwind!
-      </h1>
-      <h1 className="text-2xl font-bold mb-4 text-red-500">Datas:</h1>
-      <ul>
-        {data.map((item, index) => (
-          <li key={index}>{item}</li> // Render each string directly
-        ))}
-      </ul>
-    </div>
-  );
+    <Router>
+      <div className="flex min-h-screen flex-col">
+        <Layout>
+        <main className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/search" element={<Search />} />
+            <Route path="/downloads" element={<Downloads />} />
+            <Route path="/library" element={<Library />} />
+            <Route path="/favorites" element={<Favorites />} />
+          </Routes>
+        </main>
+        </Layout>
+      </div>
+    </Router>
+  )
 }
-
-export default App;
