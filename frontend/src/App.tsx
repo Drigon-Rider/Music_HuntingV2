@@ -22,7 +22,10 @@ function App() {
 
   return (
     <div>
-      <h1>Datas:</h1>
+      <h1 className="text-3xl font-bold text-blue-500">
+          Hello Tailwind!
+      </h1>
+      <h1 className="text-2xl font-bold mb-4 text-red-500">Datas:</h1>
       <ul>
         {data.map((item, index) => (
           <li key={index}>{item}</li> // Render each string directly
