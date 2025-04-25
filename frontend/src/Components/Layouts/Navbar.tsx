@@ -1,8 +1,6 @@
-"use client"
-
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Music, Search, Download, Library, Heart, Menu, X, Home, Headphones } from 'lucide-react'
+import { Search, Download, Library, Heart, Menu, X, Home, Headphones } from 'lucide-react'
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -41,20 +39,9 @@ export function Navbar() {
           </Link>
         </nav>
 
-        {/* Search Bar */}
-        <div className="hidden md:flex items-center gap-4">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <input
-              type="search"
-              placeholder="Search for music..."
-              className="w-[200px] lg:w-[300px] pl-8 py-2 text-sm bg-muted border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
-          </div>
-          <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90">
-            Sign In
-          </button>
-        </div>
+        <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90">
+          Sign In
+        </button>
 
         {/* Mobile Menu Button */}
         <button
@@ -114,14 +101,6 @@ export function Navbar() {
               <Heart className="h-4 w-4" />
               Favorites
             </Link>
-            <div className="relative mt-2">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <input
-                type="search"
-                placeholder="Search for music..."
-                className="w-[200px] lg:w-[300px] pl-8 py-2 text-sm bg-muted border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              />
-            </div>
             <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90">
               Sign In
             </button>
