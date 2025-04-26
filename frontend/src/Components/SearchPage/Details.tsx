@@ -1,10 +1,6 @@
 import { DownloadButton } from "./Downloadbutton";
 
-interface DetailsProps {
-  result: any;
-}
-
-export const Details: React.FC<DetailsProps> = ({ result }) => {
+export const Details = ({ result }: { result: any }) => {
   const videoUrl = `https://www.youtube.com/embed/${result.id}`;
 
   return (
