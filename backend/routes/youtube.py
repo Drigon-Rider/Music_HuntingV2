@@ -10,4 +10,18 @@ def search_music():
         return jsonify({"results": []})
     
     results = YoutubeSearch(query, max_results=10).to_dict()
-    return jsonify({"results": [result['title'] for result in results]})
+    
+    # Prepare detailed results
+    detailed_results = []
+    for result in results:
+        detailed_results.append({
+            "id": result.get("id"),
+            "thumbnails": result.get("thumbnails"),
+            "title": result.get("title"),
+            "channel": result.get("channel"),
+            "duration": result.get("duration"),
+            "views": result.get("views"),
+            "url_suffix": result.get("url_suffix")
+        })
+    
+    return jsonify({"results": detailed_results})

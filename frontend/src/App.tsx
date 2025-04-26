@@ -5,6 +5,7 @@ import { Search } from "./Components/SearchPage/Search"
 import { Library } from "./Components/LibraryPage/Library"
 import { Favorites } from "./Components/FavoritesPage/Favorites"
 import { Layout } from ".//Components/Layouts/Layout"
+import {Details} from "./Components/SearchPage/Details"
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
             <Route path="/downloads" element={<Downloads />} />
             <Route path="/library" element={<Library />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/details" element={<Details />} />
           </Routes>
         </main>
         </Layout>
