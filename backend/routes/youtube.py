@@ -9,5 +9,5 @@ def search_music():
     if not query:
         return jsonify({"results": []})
     
-    results = YoutubeSearch(query, max_results=5).to_dict()
+    results = YoutubeSearch(query, max_results=10).to_dict()
     return jsonify({"results": [result['title'] for result in results]})

@@ -8,12 +8,5 @@ export default defineConfig({
   server: {
     port: 3000,
     open: true,
-    proxy: {
-      '/hello': {
-        target: 'http://localhost:5000', // The backend server URL
-        changeOrigin: true,
-        secure: false,
-      },
-    },
   },
 })
