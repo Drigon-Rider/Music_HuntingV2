@@ -6,10 +6,9 @@ export const Search = () => {
 
   const handleSearch = async () => {
     if (!query.trim()) return;
-
+  
     try {
-      // Simulate an API call to search for music
-      const response = await fetch(`/api/search?query=${encodeURIComponent(query)}`);
+      const response = await fetch(`http://127.0.0.1:5000/api/ytsearch?query=${encodeURIComponent(query)}`);
       const data = await response.json();
       setResults(data.results || []);
     } catch (error) {
