@@ -1,79 +1,112 @@
-import { useState } from "react";
-import { Details } from "./Details";
+import { useState } from "react"
+import { useAudio } from "./Audio/AudioContext"
+import { DownloadButton } from "./Downloadbutton"
 
 export const Search = () => {
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<any[]>([]);
-  const [selectedResult, setSelectedResult] = useState<any | null>(null);
+  const [query, setQuery] = useState("")
+  const [results, setResults] = useState<any[]>([])
+  const { playTrack, pauseTrack, isPlaying, currentTrack } = useAudio()
 
   const handleSearch = async () => {
-    if (!query.trim()) return;
+    if (!query.trim()) return
 
     try {
-      // const response = await fetch(`${import.meta.env.VITE_Not_Hosted_API}/ytsearch?query=${encodeURIComponent(query)}`); //dont delete this please
       const response = await fetch(`${import.meta.env.VITE_Hosted_API}/ytsearch?query=${encodeURIComponent(query)}`);
-      const data = await response.json();
-      setResults(data.results || []);
-      setSelectedResult(null); // Clear the selected result when a new search is performed
+      const data = await response.json()
+      setResults(data.results || [])
     } catch (error) {
-      console.error("Error fetching search results:", error);
+      console.error("Error fetching search results:", error)
     }
-  };
+  }
 
-  const handleResultClick = (result: any) => {
-    setSelectedResult(result); // Set the selected result to display details
-  };
+  const handlePlay = (result: any) => {
+    // Check if this track is already playing
+    if (currentTrack && currentTrack.id === result.id && isPlaying) {
+      pauseTrack()
+    } else {
+      playTrack(result)
+    }
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Search Music</h1>
-      <div className="mb-4">
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search for songs, artists, or albums..."
-          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        <button
-          onClick={handleSearch}
-          className="mt-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-md hover:opacity-90"
-        >
-          Search
-        </button>
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">Search Music</h1>
+
+      <div className="mb-6">
+        <div className="flex">
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search for songs, artists, or albums..."
+            className="flex-1 px-4 py-3 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+          />
+          <button
+            onClick={handleSearch}
+            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-r-md hover:from-purple-700 hover:to-indigo-700 transition-colors"
+          >
+            Search
+          </button>
+        </div>
       </div>
+
       <div>
         {results.length > 0 ? (
-          <ul className="space-y-4">
-            {results.map((result, index) => (
-              <li
-                key={index}
-                className="p-4 border rounded-md flex items-center space-x-4 hover:bg-gray-100 cursor-pointer"
-                onClick={() => handleResultClick(result)}
-              >
-                <img
-                  src={result.thumbnails[0]}
-                  alt={result.title}
-                  className="w-16 h-16 object-cover rounded-md"
-                />
-                <div>
-                  <h3 className="font-bold">{result.title}</h3>
-                  <p className="text-sm text-gray-500">{result.channel}</p>
-                  <p className="text-sm text-gray-500">{result.duration}</p>
-                </div>
-              </li>
-            ))}
+          <ul className="space-y-3">
+            {results.map((result, index) => {
+              const isCurrentlyPlaying = currentTrack && currentTrack.id === result.id && isPlaying
+
+              return (
+                <li
+                  key={index}
+                  className="p-4 border border-gray-200 rounded-lg flex items-center space-x-4 hover:bg-gray-50 transition-colors relative"
+                >
+                  <div className="relative">
+                    <img
+                      src={result.thumbnails[0] || "/placeholder.svg"}
+                      alt={result.title}
+                      className="w-16 h-16 object-cover rounded-md"
+                    />
+                    <button
+                      onClick={() => handlePlay(result)}
+                      className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-md opacity-0 hover:opacity-100 transition-opacity"
+                    >
+                      {isCurrentlyPlaying ? (
+                        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <rect x="6" y="4" width="4" height="16" />
+                          <rect x="14" y="4" width="4" height="16" />
+                        </svg>
+                      ) : (
+                        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      )}
+                    </button>
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-medium text-gray-900 truncate">{result.title}</h3>
+                    <p className="text-sm text-gray-500">{result.channel}</p>
+                    <div className="flex items-center space-x-2 text-xs text-gray-500">
+                      <span>{result.duration}</span>
+                      <span>•</span>
+                      <span>{result.views}</span>
+                    </div>
+                  </div>
+                  <DownloadButton result={result} />
+                </li>
+              )
+            })}
           </ul>
         ) : (
-          <p className="text-gray-500 dark:text-gray-400">No results found.</p>
+          <div className="text-center py-12">
+            <p className="text-gray-500">
+              {query ? "No results found. Try a different search term." : "Search for your favorite music!"}
+            </p>
+          </div>
         )}
       </div>
-      {/* Render the Details component if a result is selected */}
-      {selectedResult && (
-        <div className="mt-8">
-          <Details result={selectedResult} />
-        </div>
-      )}
     </div>
-  );
-};
+  )
+}
