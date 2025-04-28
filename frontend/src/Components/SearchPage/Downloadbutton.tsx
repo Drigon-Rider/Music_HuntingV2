@@ -6,7 +6,7 @@ interface DownloadButtonProps {
 
 export const DownloadButton: React.FC<DownloadButtonProps> = ({ result }) => {
   const handleDownload = () => {
-    alert(`Download functionality for "${result.title}" coming soon!`);
+    alert(`Download functionality for "${result.id}" coming soon!`);
   };
 
   return (

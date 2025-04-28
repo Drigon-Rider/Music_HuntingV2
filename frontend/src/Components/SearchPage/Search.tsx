@@ -10,8 +10,8 @@ export const Search = () => {
     if (!query.trim()) return;
 
     try {
-      // const response = await fetch(`http://127.0.0.1:5000/api/ytsearch?query=${encodeURIComponent(query)}`); //dont delete this please
-      const response = await fetch(`https://music-hunting.onrender.com/api/ytsearch?query=${encodeURIComponent(query)}`);
+      // const response = await fetch(`${import.meta.env.VITE_Not_Hosted_API}/ytsearch?query=${encodeURIComponent(query)}`); //dont delete this please
+      const response = await fetch(`${import.meta.env.VITE_Hosted_API}/ytsearch?query=${encodeURIComponent(query)}`);
       const data = await response.json();
       setResults(data.results || []);
       setSelectedResult(null); // Clear the selected result when a new search is performed
