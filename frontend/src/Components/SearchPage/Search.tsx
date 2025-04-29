@@ -1,32 +1,34 @@
-import { useState } from "react"
-import { useAudio } from "./Audio/AudioContext"
-import { DownloadButton } from "./Downloadbutton"
+import { useState } from "react";
+import { useAudio } from "./Audio/AudioContext";
+import { DownloadButton } from "../DownloadsPage/DownloadButton";
 
 export const Search = () => {
-  const [query, setQuery] = useState("")
-  const [results, setResults] = useState<any[]>([])
-  const { playTrack, pauseTrack, isPlaying, currentTrack } = useAudio()
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<any[]>([]);
+  const { playTrack, pauseTrack, isPlaying, currentTrack } = useAudio();
 
   const handleSearch = async () => {
-    if (!query.trim()) return
+    if (!query.trim()) return;
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_Hosted_API}/ytsearch?query=${encodeURIComponent(query)}`);
-      const data = await response.json()
-      setResults(data.results || [])
+      const response = await fetch(
+        `${import.meta.env.VITE_Hosted_API}/ytsearch?query=${encodeURIComponent(query)}`
+      );
+      const data = await response.json();
+      setResults(data.results || []);
     } catch (error) {
-      console.error("Error fetching search results:", error)
+      console.error("Error fetching search results:", error);
     }
-  }
+  };
 
   const handlePlay = (result: any) => {
     // Check if this track is already playing
     if (currentTrack && currentTrack.id === result.id && isPlaying) {
-      pauseTrack()
+      pauseTrack();
     } else {
-      playTrack(result)
+      playTrack(result);
     }
-  }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -55,7 +57,8 @@ export const Search = () => {
         {results.length > 0 ? (
           <ul className="space-y-3">
             {results.map((result, index) => {
-              const isCurrentlyPlaying = currentTrack && currentTrack.id === result.id && isPlaying
+              const isCurrentlyPlaying =
+                currentTrack && currentTrack.id === result.id && isPlaying;
 
               return (
                 <li
@@ -73,12 +76,20 @@ export const Search = () => {
                       className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-md opacity-0 hover:opacity-100 transition-opacity"
                     >
                       {isCurrentlyPlaying ? (
-                        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="w-8 h-8 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <rect x="6" y="4" width="4" height="16" />
                           <rect x="14" y="4" width="4" height="16" />
                         </svg>
                       ) : (
-                        <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <svg
+                          className="w-8 h-8 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
                           <path d="M8 5v14l11-7z" />
                         </svg>
                       )}
@@ -86,7 +97,9 @@ export const Search = () => {
                   </div>
 
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 truncate">{result.title}</h3>
+                    <h3 className="font-medium text-gray-900 truncate">
+                      {result.title}
+                    </h3>
                     <p className="text-sm text-gray-500">{result.channel}</p>
                     <div className="flex items-center space-x-2 text-xs text-gray-500">
                       <span>{result.duration}</span>
@@ -94,19 +107,25 @@ export const Search = () => {
                       <span>{result.views}</span>
                     </div>
                   </div>
-                  <DownloadButton result={result} />
+                  <DownloadButton
+                    videoId={result.id}
+                    onDownloadSuccess={() => alert("Download started successfully!")}
+                    onDownloadError={(error) => alert(`Failed to start download: ${error}`)}
+                  />
                 </li>
-              )
+              );
             })}
           </ul>
         ) : (
           <div className="text-center py-12">
             <p className="text-gray-500">
-              {query ? "No results found. Try a different search term." : "Search for your favorite music!"}
+              {query
+                ? "No results found. Try a different search term."
+                : "Search for your favorite music!"}
             </p>
           </div>
         )}
       </div>
     </div>
-  )
-}
+  );
+};

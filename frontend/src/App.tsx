@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
-import { Downloads } from "./Components/DownloadsPage/Downloads"
 import { Home } from "./Components/HomePage/Home"
 import { Search } from "./Components/SearchPage/Search"
 import { Library } from "./Components/LibraryPage/Library"
 import { Favorites } from "./Components/FavoritesPage/Favorites"
 import { Layout } from ".//Components/Layouts/Layout"
+import { OfflinePlayer } from "./Components/Offline/OfflinePlayer"
 
 export default function App() {
   return (
@@ -15,9 +15,9 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
-            <Route path="/downloads" element={<Downloads />} />
             <Route path="/library" element={<Library />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/offline" element={<OfflinePlayer />} />
           </Routes>
         </main>
         </Layout>

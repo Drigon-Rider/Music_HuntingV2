@@ -55,7 +55,7 @@ export const AudioProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     try {
       // Fetch audio URL if not provided directly
       if (!track.audio_url) {
-        const response = await fetch(`${import.meta.env.VITE_Not_Hosted_API}/audio?id=${track.id}`)
+        const response = await fetch(`${import.meta.env.VITE_Hosted_API}/audio?id=${track.id}`)
         const data = await response.json()
         if (data.audio_url) {
           setAudioUrl(data.audio_url)

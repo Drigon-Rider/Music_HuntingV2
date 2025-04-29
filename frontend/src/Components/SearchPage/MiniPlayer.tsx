@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useAudio } from "./Audio/AudioContext"
-import { DownloadButton } from "./Downloadbutton"
+import { DownloadButton } from "../DownloadsPage/DownloadButton"
 
 export const MiniPlayer = () => {
   const { isPlaying, currentTrack, duration, currentTime, pauseTrack, resumeTrack, seekTo } = useAudio()
@@ -59,8 +59,11 @@ export const MiniPlayer = () => {
                 </svg>
               )}
             </button>
-            < DownloadButton result={currentTrack} />
-
+                <DownloadButton
+                    videoId={currentTrack.id}
+                    onDownloadSuccess={() => alert("Download started successfully!")}
+                    onDownloadError={(error) => alert(`Failed to start download: ${error}`)}
+                  />
             {/* Expand/Collapse button */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}

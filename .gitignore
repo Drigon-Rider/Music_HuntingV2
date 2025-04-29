@@ -23,7 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
-#Environment variables
+# Ignore .env file
 .env
+
+# Ignore virtual environments
 backend/venv/
+
+# Ignore downloads folder inside backend
+backend/downloads/
 

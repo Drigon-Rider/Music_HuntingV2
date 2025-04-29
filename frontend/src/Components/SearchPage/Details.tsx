@@ -1,5 +1,5 @@
 import { useAudio } from "./Audio/AudioContext"
-import { DownloadButton } from "./Downloadbutton"
+import { DownloadButton } from "../DownloadsPage/DownloadHandler"
 
 export const Details = ({ result }: { result: any }) => {
   const { playTrack, pauseTrack, isPlaying, currentTrack, currentTime, duration, seekTo } = useAudio()

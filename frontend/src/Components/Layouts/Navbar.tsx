@@ -25,10 +25,6 @@ export function Navbar() {
             <Search className="h-4 w-4" />
             Search
           </Link>
-          <Link to="/downloads" className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary">
-            <Download className="h-4 w-4" />
-            Downloads
-          </Link>
           <Link to="/library" className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary">
             <Library className="h-4 w-4" />
             Library
@@ -36,6 +32,10 @@ export function Navbar() {
           <Link to="/favorites" className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary">
             <Heart className="h-4 w-4" />
             Favorites
+          </Link>
+          <Link to="/offline" className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary">
+            <Headphones className="h-4 w-4" />
+            Offline
           </Link>
         </nav>
 
@@ -78,14 +78,6 @@ export function Navbar() {
               Search
             </Link>
             <Link
-              to="/downloads"
-              className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              <Download className="h-4 w-4" />
-              Downloads
-            </Link>
-            <Link
               to="/library"
               className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary"
               onClick={() => setIsMenuOpen(false)}
@@ -100,6 +92,14 @@ export function Navbar() {
             >
               <Heart className="h-4 w-4" />
               Favorites
+            </Link>
+            <Link
+              to="/offline"
+              className="flex items-center gap-2 text-sm font-medium transition-colors hover:text-primary"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Headphones className="h-4 w-4" />
+              Offline
             </Link>
             <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90">
               Sign In
