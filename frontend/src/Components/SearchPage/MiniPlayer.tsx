@@ -6,7 +6,7 @@ import { SkipForward, SkipBack } from "lucide-react"; // Import SkipForward and 
 
 export const MiniPlayer = () => {
   const { isPlaying, currentTrack, duration, currentTime, pauseTrack, resumeTrack, seekTo } = useAudio();
-  const { playNext, playPrevious, getQueue } = useQueue(); // Access queue functions
+  const { playNext, playPrevious } = useQueue(); // Access queue functions
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Format time in MM:SS

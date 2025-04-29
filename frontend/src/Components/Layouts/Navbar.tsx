@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Search, Download, Library, Heart, Menu, X, Home, Headphones } from 'lucide-react'
+import { Search, Library, Heart, Menu, X, Home, Headphones } from 'lucide-react'
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
