@@ -1,10 +1,12 @@
-// filepath: c:\Users\LEGION\Documents\GitHub\Music_Hunting\frontend\src\Components\OfflinePlayer.tsx
 import { useState, useEffect } from "react";
 import { useAudio } from "../SearchPage/Audio/AudioContext";
+import { useQueue } from "../Queue/QueueContext"; // Import the queue context
+import { Play, Pause, Plus } from "lucide-react"; // Import icons from lucide-react
 
 export const OfflinePlayer = () => {
   const [offlineTracks, setOfflineTracks] = useState<any[]>([]);
   const { playTrack, pauseTrack, isPlaying, currentTrack } = useAudio();
+  const { addToQueue } = useQueue(); // Access the addToQueue function
 
   useEffect(() => {
     const fetchOfflineTracks = async () => {
@@ -20,18 +22,26 @@ export const OfflinePlayer = () => {
     fetchOfflineTracks();
   }, []);
 
- const handlePlay = (track: any) => {
-  if (currentTrack && currentTrack.name === track.name && isPlaying) {
-    pauseTrack();
-  } else {
-    // Pass the track name and audio URL to playTrack
-    playTrack({
-      title: track.name, // Ensure the name is passed
-        channel: "Offline Music", // Channel name for offline music   
-      audio_url: `${import.meta.env.VITE_Hosted_API}/offline-music/${track.name}`, // URL for the offline track
+  const handlePlay = (track: any) => {
+    if (currentTrack && currentTrack.name === track.name && isPlaying) {
+      pauseTrack();
+    } else {
+      playTrack({
+        title: track.name, // Ensure the name is passed
+        channel: "Offline Music", // Channel name for offline music
+        audio_url: `${import.meta.env.VITE_Hosted_API}/offline-music/${track.name}`, // URL for the offline track
+      });
+    }
+  };
+
+  const handleAddToQueue = (track: any) => {
+    addToQueue({
+      title: track.name,
+      channel: "Offline Music",
+      audio_url: `${import.meta.env.VITE_Hosted_API}/offline-music/${track.name}`,
     });
-  }
-};
+    alert(`${track.name} added to the queue!`);
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -49,12 +59,27 @@ export const OfflinePlayer = () => {
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-gray-900 truncate">{track.name}</h3>
                 </div>
-                <button
-                  onClick={() => handlePlay(track)}
-                  className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors"
-                >
-                  {isCurrentlyPlaying ? "Pause" : "Play"}
-                </button>
+                <div className="flex items-center space-x-2">
+                  {/* Play/Pause Button */}
+                  <button
+                    onClick={() => handlePlay(track)}
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+                  >
+                    {isCurrentlyPlaying ? (
+                      <Pause className="w-5 h-5 text-purple-600" />
+                    ) : (
+                      <Play className="w-5 h-5 text-purple-600" />
+                    )}
+                  </button>
+
+                  {/* Add to Queue Button */}
+                  <button
+                    onClick={() => handleAddToQueue(track)}
+                    className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+                  >
+                    <Plus className="w-5 h-5 text-gray-600" />
+                  </button>
+                </div>
               </li>
             );
           })}

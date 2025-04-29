@@ -1,20 +1,23 @@
-import { useState } from "react"
-import { useAudio } from "./Audio/AudioContext"
-import { DownloadButton } from "../DownloadsPage/DownloadButton"
+import { useState } from "react";
+import { useAudio } from "./Audio/AudioContext";
+import { useQueue } from "../Queue/QueueContext"; // Import the queue context
+import { DownloadButton } from "../DownloadsPage/DownloadButton";
+import { SkipForward, SkipBack } from "lucide-react"; // Import SkipForward and SkipBack icons
 
 export const MiniPlayer = () => {
-  const { isPlaying, currentTrack, duration, currentTime, pauseTrack, resumeTrack, seekTo } = useAudio()
-  const [isExpanded, setIsExpanded] = useState(false)
+  const { isPlaying, currentTrack, duration, currentTime, pauseTrack, resumeTrack, seekTo } = useAudio();
+  const { playNext, playPrevious, getQueue } = useQueue(); // Access queue functions
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Format time in MM:SS
   const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60)
-    const seconds = Math.floor(time % 60)
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`
-  }
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
 
   // If no track is playing, don't render the player
-  if (!currentTrack) return null
+  if (!currentTrack) return null;
 
   return (
     <div
@@ -43,6 +46,14 @@ export const MiniPlayer = () => {
 
           {/* Controls */}
           <div className="flex items-center space-x-4">
+            {/* Backward button */}
+            <button
+              onClick={playPrevious} // Call the playPrevious function
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+            >
+              <SkipBack className="w-4 h-4 text-gray-500" />
+            </button>
+
             {/* Play/Pause button */}
             <button
               onClick={isPlaying ? pauseTrack : resumeTrack}
@@ -59,11 +70,21 @@ export const MiniPlayer = () => {
                 </svg>
               )}
             </button>
-                <DownloadButton
-                    videoId={currentTrack.id}
-                    onDownloadSuccess={() => alert("Download started successfully!")}
-                    onDownloadError={(error) => alert(`Failed to start download: ${error}`)}
-                  />
+
+            {/* Forward button */}
+            <button
+              onClick={playNext} // Call the playNext function
+              className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+            >
+              <SkipForward className="w-4 h-4 text-gray-500" />
+            </button>
+
+            <DownloadButton
+              videoId={currentTrack.id}
+              onDownloadSuccess={() => alert("Download started successfully!")}
+              onDownloadError={(error) => alert(`Failed to start download: ${error}`)}
+            />
+
             {/* Expand/Collapse button */}
             <button
               onClick={() => setIsExpanded(!isExpanded)}
@@ -108,5 +129,5 @@ export const MiniPlayer = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};

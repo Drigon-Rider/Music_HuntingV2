@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useAudio } from "./Audio/AudioContext";
+import { useQueue } from "../Queue/QueueContext";
 import { DownloadButton } from "../DownloadsPage/DownloadButton";
+import { Plus } from "lucide-react";
 
 export const Search = () => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<any[]>([]);
   const { playTrack, pauseTrack, isPlaying, currentTrack } = useAudio();
+  const { addToQueue } = useQueue();
 
   const handleSearch = async () => {
     if (!query.trim()) return;
@@ -22,12 +25,16 @@ export const Search = () => {
   };
 
   const handlePlay = (result: any) => {
-    // Check if this track is already playing
     if (currentTrack && currentTrack.id === result.id && isPlaying) {
       pauseTrack();
     } else {
       playTrack(result);
     }
+  };
+
+  const handleAddToQueue = (result: any) => {
+    addToQueue(result);
+    alert(`${result.title} added to the queue!`);
   };
 
   return (
@@ -107,11 +114,26 @@ export const Search = () => {
                       <span>{result.views}</span>
                     </div>
                   </div>
-                  <DownloadButton
-                    videoId={result.id}
-                    onDownloadSuccess={() => alert("Download started successfully!")}
-                    onDownloadError={(error) => alert(`Failed to start download: ${error}`)}
-                  />
+                  <div className="flex space-x-2">
+                    <div className="relative group">
+                      <button
+                        onClick={() => handleAddToQueue(result)}
+                        className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200"
+                      >
+                        <Plus className="w-4.5 h-4.5" />
+                      </button>
+                      <span className="absolute bottom-full mb-1 left-1/2 transform -translate-x-1/2 px-2 py-1 text-xs text-gray-700 bg-gray-200 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        Add to Queue
+                      </span>
+                    </div>
+                    <DownloadButton
+                      videoId={result.id}
+                      onDownloadSuccess={() => alert("Download started successfully!")}
+                      onDownloadError={(error) =>
+                        alert(`Failed to start download: ${error}`)
+                      }
+                    />
+                  </div>
                 </li>
               );
             })}
