@@ -1,9 +1,12 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Search, Library, Heart, Menu, X, Home, Headphones } from 'lucide-react'
+import { useAuth } from "../../context/AuthContext"
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { user, logout } = useAuth();
+
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -37,11 +40,33 @@ export function Navbar() {
             <Headphones className="h-4 w-4" />
             Offline
           </Link>
-        </nav>
+      
 
-        <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90">
-          Sign In
-        </button>
+                  {user ? (
+            <>
+              <span className="hidden md:inline text-sm">Welcome, {user.username}</span>
+              <button
+                onClick={logout}
+                className="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="text-sm font-medium hover:text-primary">
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90"
+              >
+                Register
+              </Link>
+            </>
+          )}
+            </nav>
+
 
         {/* Mobile Menu Button */}
         <button
@@ -101,9 +126,38 @@ export function Navbar() {
               <Headphones className="h-4 w-4" />
               Offline
             </Link>
-            <button className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90">
-              Sign In
-            </button>
+            {user ? (
+  <>
+    <span className="text-sm">Welcome, {user.username}</span>
+    <button
+      onClick={() => {
+        logout()
+        setIsMenuOpen(false)
+      }}
+      className="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md"
+    >
+      Logout
+    </button>
+  </>
+) : (
+  <>
+    <Link
+      to="/login"
+      className="text-sm font-medium hover:text-primary"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      Login
+    </Link>
+    <Link
+      to="/register"
+      className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 rounded-md hover:opacity-90"
+      onClick={() => setIsMenuOpen(false)}
+    >
+      Register
+    </Link>
+  </>
+)}
+
           </nav>
         </div>
       )}
